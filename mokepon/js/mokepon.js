@@ -80,45 +80,66 @@ function ataqueDelEnemigo(){
     }else{
         ataqueEnemigo = "TIERRA"
     }
-    crearMensaje()
+    
+    combate();
+}
 
-}
-function crearMensaje(){
-    let sectionMensajes = document.getElementById('mensajes')
-    let parrafo = document.createElement('p')
-    let resultado = combate()
-    parrafo.innerHTML = "Tu mascota atacó con "+ataqueJugador + ", la mascota del enemigo atacó con " +ataqueEnemigo + "->"+resultado
-    sectionMensajes.appendChild(parrafo)
-}
 
 function combate(){
     let resultado
     if(ataqueJugador == "FUEGO" && ataqueEnemigo == "TIERRA"){
-        resultado = "GANASTE"
+        
+        resultado = "Ganaste"
     }else if(ataqueJugador == "AGUA" && ataqueEnemigo == "FUEGO"){
-        resultado = "GANASTE"
+        
+        resultado = "Ganaste"
     }else if(ataqueJugador == "TIERRA" && ataqueEnemigo == "AGUA"){
-        resultado = "GANASTE"
+        
+        resultado = "Ganaste"
     }else if(ataqueJugador==ataqueEnemigo){
-        resultado = "EMPATE"
+        resultado = "Empate"
     }else{
-        resultado = "PERDISTE"
+        
+        resultado = "Perdiste"
     }
+    crearMensaje(resultado)
     actualizarVidas(resultado)
-    return resultado
 }
 
 function actualizarVidas(resultado){
     let spanVidasJugador = document.getElementById('vidas-jugador')
     let spanVidasEnemigo = document.getElementById('vidas-enemigo')
-    if(resultado == "GANASTE"){
+    if(resultado == "Ganaste"){
         vidasEnemigo--
-    }else if (resultado == "PERDISTE"){
+    }else if (resultado == "Perdiste"){
         vidasJugador--
     }
     spanVidasJugador.innerHTML = vidasJugador
     spanVidasEnemigo.innerHTML = vidasEnemigo
+
+    if(vidasEnemigo==0){
+        crearMensajeFinal("jugador")
+    }else if(vidasJugador==0){
+        crearMensajeFinal("enemigo")
+    }
 }
+function crearMensaje(resultado){
+    let sectionMensajes = document.getElementById('mensajes')
+    let parrafo = document.createElement('p')
+    parrafo.innerHTML = "Tu mascota atacó con "+ataqueJugador + ", la mascota del enemigo atacó con " +ataqueEnemigo + "->"+resultado
+    sectionMensajes.appendChild(parrafo)
+}
+function crearMensajeFinal(ganador){
+    let sectionMensajes = document.getElementById('mensajes')
+    let parrafo = document.createElement('p')
+    if(ganador == "jugador"){
+        parrafo.innerHTML = "Felicidades ganaste"
+    }else{
+        parrafo.innerHTML = "F perdiste"
+    }
+    sectionMensajes.appendChild(parrafo)
+}
+
 
 function aleatorio(min,max){
     return Math.floor(Math.random()*(max-min+1)+min)
