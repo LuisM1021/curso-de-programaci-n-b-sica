@@ -6,6 +6,9 @@ let vidasEnemigo = 3
 
 
 function iniciarJuego(){
+    let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
+    sectionSeleccionarAtaque.style.display = 'none'
+
     let btnMascotaJugador = document.getElementById('btn-mascota') 
 
     btnMascotaJugador.addEventListener('click',seleccionarMascotaJugador)
@@ -13,19 +16,28 @@ function iniciarJuego(){
     let btnFuego = document.getElementById('btn-fuego')
     let btnAgua = document.getElementById('btn-agua')
     let btnTierra = document.getElementById('btn-tierra')
+    let btnReiniciar = document.getElementById('btn-reiniciar')
     
 
     
     btnFuego.addEventListener('click',ataqueFuego)
     btnAgua.addEventListener('click',ataqueAgua)
     btnTierra.addEventListener('click',ataqueTierra)
+    btnReiniciar.addEventListener('click',reiniciarJuego)
+
+    btnReiniciar.style.display = 'none'
     
 
 }    
 
+function seleccionarMascotaJugador(){
+    let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
     
 
-function seleccionarMascotaJugador(){
+    let sectionSeleccionarMascota = document.getElementById('seleccionar-mascota')
+    
+
+    let error = false
     let inputHipodogue = document.getElementById('hipodogue')
     let inputCapipepo = document.getElementById('capipepo')
     let inputRatigueya = document.getElementById('ratigueya')
@@ -33,14 +45,22 @@ function seleccionarMascotaJugador(){
 
     if(inputHipodogue.checked){
         spanMascotaJugador.innerHTML = "Hipodogue"
+        error = false
     }else if(inputCapipepo.checked){
         spanMascotaJugador.innerHTML = "Capipepo"
+        error = false
     }else if(inputRatigueya.checked){
         spanMascotaJugador.innerHTML = "Ratigueya"
+        error = false
     }else{
         alert("No seleccionaste personaje")
+        error = true
     }
-    seleccionarMascotaEnemigo()
+    if(!error){
+        seleccionarMascotaEnemigo() 
+        sectionSeleccionarAtaque.style.display = 'block'
+        sectionSeleccionarMascota.style.display = 'none'
+    }
 }
     
 
@@ -138,8 +158,22 @@ function crearMensajeFinal(ganador){
         parrafo.innerHTML = "F perdiste"
     }
     sectionMensajes.appendChild(parrafo)
-}
 
+    let btnAgua = document.getElementById('btn-agua')
+    let btnFuego = document.getElementById('btn-fuego')
+    let btnTierra = document.getElementById('btn-tierra')
+
+    btnAgua.disabled = true
+    btnFuego.disabled = true
+    btnTierra.disabled = true
+
+    let btnReiniciar = document.getElementById('btn-reiniciar')
+    btnReiniciar.style.display = 'block'
+    btnReiniciar.style.backgroundColor= 'rgb(0,255,0)'
+}
+function reiniciarJuego(){
+    location.reload()
+}   
 
 function aleatorio(min,max){
     return Math.floor(Math.random()*(max-min+1)+min)
