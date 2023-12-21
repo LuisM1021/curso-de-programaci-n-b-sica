@@ -20,3 +20,14 @@
 input{
     display: none;
 }
+#btn-mascota{
+    width: 200px;
+    height: 48px;
+    background-color: blue;
+    font-size: medium;
+    font-weight: bold;
+    color: aliceblue;
+    border: 4px solid aquamarine;
+    border-radius: 12px;
+    margin-top: 52px;
+}
