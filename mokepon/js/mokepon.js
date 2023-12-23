@@ -58,7 +58,7 @@ function seleccionarMascotaJugador(){
     }
     if(!error){
         seleccionarMascotaEnemigo() 
-        sectionSeleccionarAtaque.style.display = 'block'
+        sectionSeleccionarAtaque.style.display = 'flex'
         sectionSeleccionarMascota.style.display = 'none'
     }
 }
@@ -144,20 +144,29 @@ function actualizarVidas(resultado){
     }
 }
 function crearMensaje(resultado){
-    let sectionMensajes = document.getElementById('mensajes')
-    let parrafo = document.createElement('p')
-    parrafo.innerHTML = "Tu mascota atacó con "+ataqueJugador + ", la mascota del enemigo atacó con " +ataqueEnemigo + "->"+resultado
-    sectionMensajes.appendChild(parrafo)
+    let resultadoPelea = document.getElementById('resultado')
+    let ataqueDelJugador = document.getElementById('ataque-jugador')
+    let ataqueDelEnemigo = document.getElementById('ataque-enemigo')
+
+    let nuevoAtaqueJugador = document.createElement('p')
+    let nuevoAtaqueEnemigo = document.createElement('p')
+
+    resultadoPelea.innerHTML = resultado
+    nuevoAtaqueJugador.innerHTML = ataqueJugador
+    nuevoAtaqueEnemigo.innerHTML = ataqueEnemigo
+
+    ataqueDelJugador.appendChild(nuevoAtaqueJugador)
+    ataqueDelEnemigo.appendChild(nuevoAtaqueEnemigo)
+
 }
+
 function crearMensajeFinal(ganador){
-    let sectionMensajes = document.getElementById('mensajes')
-    let parrafo = document.createElement('p')
+    let sectionMensajes = document.getElementById('resultado')
     if(ganador == "jugador"){
-        parrafo.innerHTML = "Felicidades ganaste"
+        sectionMensajes.innerHTML = "Felicidades ganaste"
     }else{
-        parrafo.innerHTML = "F perdiste"
+        sectionMensajes.innerHTML = "Fin del juego, perdiste"
     }
-    sectionMensajes.appendChild(parrafo)
 
     let btnAgua = document.getElementById('btn-agua')
     let btnFuego = document.getElementById('btn-fuego')
