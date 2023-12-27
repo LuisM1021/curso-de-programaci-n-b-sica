@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"/>
         <title>Mokepon</title>
         <script src="js/mokepon.js"></script>
         <link rel="stylesheet" href="styles.css">
@@ -11,21 +11,21 @@
             <h1 class="titulo">Mokepon 🔥🌱💧</h1>
             <h2 class="subtitulo">Elige tu mascota:</h2>
             <div class="tarjetas">
+                <input type="radio" name="mascota" id="hipodogue">
                 <label class="tarjeta-de-mokepon" for="hipodogue">
                     <p>Hipodogue</p>
                     <img src="assets/mokepons_mokepon_hipodoge_attack.png" alt="Hipodogue">
                 </label>
-                <input type="radio" name="mascota" id="hipodogue">
+                <input type="radio" name="mascota" id="capipepo">
                 <label class="tarjeta-de-mokepon" for="capipepo">
                     <p>Capipepo</p>
                     <img src="assets/mokepons_mokepon_capipepo_attack.png" alt="Capipepo">
                 </label>
-                <input type="radio" name="mascota" id="capipepo">
+                <input type="radio" name="mascota" id="ratigueya">
                 <label class="tarjeta-de-mokepon" for="ratigueya">
                     <p>Ratigueya</p>
                     <img src="assets/mokepons_mokepon_ratigueya_attack.png" alt="Ratigueya">
                 </label>
-                <input type="radio" name="mascota" id="ratigueya">
             </div>
             
 
@@ -47,7 +47,7 @@
         <section id="seleccionar-ataque">
             <h1 class="titulo">Mokepon 🔥🌱💧</h1>
             <h2 class="subtitulo">Elige tu ataque:</h2>
-            <div>
+            <div class="botones-ataque">
                 <button id="btn-fuego" class="btn-ataque">Fuego 🔥</button>
                 <button id="btn-agua" class="btn-ataque">Agua 💧</button>
                 <button id="btn-tierra" class="btn-ataque">Tierra 🌱</button>
@@ -59,11 +59,17 @@
                 </section>
             </div>
   
-            <div>
-                <div id="ataque-jugador"></div>
-                <div id="ataque-enemigo"></div>
-                <p>Tu mascota <span id="mascota-jugador"></span> tiene <span id="vidas-jugador">3</span> vidas</p>
-                <p>La mascota <span id="mascota-enemigo"></span> enemiga tiene <span id="vidas-enemigo">3</span> vidas</p>
+            <div class="ataques">
+                <div>
+                    <p id="vidas-jugador">3</p>
+                    <p id="mascota-jugador"></p>
+                    <div id="ataque-jugador"></div>
+                </div>
+                <div>
+                    <p id="vidas-enemigo">3</p>
+                    <p id="mascota-enemigo"></p>
+                    <div id="ataque-enemigo"></div>
+                </div>
             </div>
         </section>
     </body>
