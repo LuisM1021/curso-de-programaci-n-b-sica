@@ -7,9 +7,7 @@ const btnFuego = document.getElementById('btn-fuego')
 
 const sectionSeleccionarMascota = document.getElementById('seleccionar-mascota')
 let error = false
-const inputHipodogue = document.getElementById('hipodogue')
-const inputCapipepo = document.getElementById('capipepo')
-const inputRatigueya = document.getElementById('ratigueya')
+
 const spanMascotaJugador = document.getElementById('mascota-jugador')
 
 const spanMascotaEnemigo = document.getElementById('mascota-enemigo')
@@ -22,17 +20,74 @@ const ataqueDelJugador = document.getElementById('ataque-jugador')
 const ataqueDelEnemigo = document.getElementById('ataque-enemigo')
 
 const sectionMensajes = document.getElementById('resultado')
+const contenedorTarjetas = document.getElementById('contenedor-tarjetas')
 
+let mokepones = []
 let ataqueJugador
 let ataqueEnemigo
+let opcionDeMokepones
+let inputHipodogue
+let inputCapipepo
+let inputRatigueya
 let vidasJugador = 3
 let vidasEnemigo = 3
 
+class Mokepon{
+    constructor(nombre, foto, vida){
+        this.nombre = nombre
+        this.foto = foto
+        this.vida = vida 
+        this.ataques = []
+    }
+}
 
+let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5)
+let capipepo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5)
+let ratigueya = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5)
+
+// let cr7 = new Mokepon("Cristiano Ronaldo cr7","https://th.bing.com/th/id/OIP.1CBXsd9HagOaD_voR4yYRQHaEK?w=333&h=187&c=7&r=0&o=5&pid=1.7",5)
+
+mokepones.push(hipodogue,capipepo,ratigueya)
+hipodogue.ataques.push(
+    {nombre: "💧", id: "boton-agua"},
+    {nombre: "💧", id: "boton-agua"},
+    {nombre: "💧", id: "boton-agua"},
+    {nombre: "🔥", id: "boton-fuego"},
+    {nombre: "🌱", id: "boton-tierra"}
+)
+capipepo.ataques.push(
+    {nombre: "🌱", id: "boton-tierra"},
+    {nombre: "🌱", id: "boton-tierra"},
+    {nombre: "🌱", id: "boton-tierra"},
+    {nombre: "💧", id: "boton-agua"},
+    {nombre: "🔥", id: "boton-fuego"}
+    
+)
+ratigueya.ataques.push(
+    {nombre: "🔥", id: "boton-fuego"},
+    {nombre: "🔥", id: "boton-fuego"},
+    {nombre: "🔥", id: "boton-fuego"},
+    {nombre: "💧", id: "boton-agua"},
+    {nombre: "🌱", id: "boton-tierra"}
+)
 
 function iniciarJuego(){
 
     sectionSeleccionarAtaque.style.display = 'none'
+
+    mokepones.forEach((mokepon) => {
+        opcionDeMokepones = `
+        <input type="radio" name="mascota" id="${mokepon.nombre}">
+                <label class="tarjeta-de-mokepon" for="${mokepon.nombre}">
+                    <p>${mokepon.nombre}</p>
+                    <img src="${mokepon.foto}" alt="${mokepon.nombre}">
+                </label>
+        `
+        contenedorTarjetas.innerHTML += opcionDeMokepones
+        inputHipodogue = document.getElementById('Hipodogue')
+        inputCapipepo = document.getElementById('Capipepo')
+        inputRatigueya = document.getElementById('Ratigueya')
+    })
 
     btnMascotaJugador.addEventListener('click',seleccionarMascotaJugador)
 
