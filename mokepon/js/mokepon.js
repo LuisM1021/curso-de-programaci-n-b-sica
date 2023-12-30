@@ -101,13 +101,13 @@ function iniciarJuego(){
 
 function seleccionarMascotaJugador(){
     if(inputHipodogue.checked){
-        spanMascotaJugador.innerHTML = "Hipodogue"
+        spanMascotaJugador.innerHTML = inputHipodogue.id
         error = false
     }else if(inputCapipepo.checked){
-        spanMascotaJugador.innerHTML = "Capipepo"
+        spanMascotaJugador.innerHTML = inputCapipepo.id
         error = false
     }else if(inputRatigueya.checked){
-        spanMascotaJugador.innerHTML = "Ratigueya"
+        spanMascotaJugador.innerHTML = inputRatigueya.id
         error = false
     }else{
         alert("No seleccionaste personaje")
@@ -123,15 +123,18 @@ function seleccionarMascotaJugador(){
 
 
 function seleccionarMascotaEnemigo(){
-    let mascota = aleatorio(1,3)
-    if(mascota == 1){
-        spanMascotaEnemigo.innerHTML = "Hipodogue"
-    }else if(mascota == 2){
-        spanMascotaEnemigo.innerHTML = "Capipepo"
-    }
-    else if(mascota == 3){
-        spanMascotaEnemigo.innerHTML = "Ratigueya"
-    }
+    let mascota = aleatorio(0,mokepones.length-1)
+
+    spanMascotaEnemigo.innerHTML = mokepones[mascota].nombre
+
+    // if(mascota == 1){
+    //     spanMascotaEnemigo.innerHTML = "Hipodogue"
+    // }else if(mascota == 2){
+    //     spanMascotaEnemigo.innerHTML = "Capipepo"
+    // }
+    // else if(mascota == 3){
+    //     spanMascotaEnemigo.innerHTML = "Ratigueya"
+    // }
 }
 
 function ataqueFuego(){
