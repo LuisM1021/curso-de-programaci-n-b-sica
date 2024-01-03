@@ -29,7 +29,7 @@ let btnFuego
 let mokepones = []
 let ataqueJugador
 let mascotaJugador
-let ataqueEnemigo
+let ataqueEnemigo =[]
 let opcionDeMokepones
 let inputHipodogue
 let inputCapipepo
@@ -37,6 +37,7 @@ let inputRatigueya
 let vidasJugador = 3
 let vidasEnemigo = 3
 let ataqueMokepon
+let ataquesMokeponEnemigo = []
 let botones = []
 let ataqueDeJugador = []
 class Mokepon{
@@ -137,18 +138,8 @@ function seleccionarMascotaEnemigo(){
     let mascota = aleatorio(0,mokepones.length-1)
 
     spanMascotaEnemigo.innerHTML = mokepones[mascota].nombre
+    ataquesMokeponEnemigo = mokepones[mascota].ataques
     secuenciaAtaques()
-    // activarAtaques(mokepones[mascota])
-
-    
-    // if(mascota == 1){
-    //     spanMascotaEnemigo.innerHTML = "Hipodogue"
-    // }else if(mascota == 2){
-    //     spanMascotaEnemigo.innerHTML = "Capipepo"
-    // }
-    // else if(mascota == 3){
-    //     spanMascotaEnemigo.innerHTML = "Ratigueya"
-    // }
 }
 
 function activarAtaques(){
@@ -169,9 +160,6 @@ function activarAtaques(){
 
     botones = document.querySelectorAll('.btn-ataque')
 
-    btnFuego.addEventListener('click',ataqueFuego)
-    btnAgua.addEventListener('click',ataqueAgua)
-    btnTierra.addEventListener('click',ataqueTierra)
 }
 
 function secuenciaAtaques(){
@@ -190,36 +178,26 @@ function secuenciaAtaques(){
                 console.log(ataqueDeJugador)
                 btn.style.background = "#112f58"
             }
+            ataqueDeEnemigo()
         })
     })
+    
 }
 
-function ataqueFuego(){
-    ataqueJugador = "FUEGO"
-    ataqueDeEnemigo()
-}
-function ataqueAgua(){
-    ataqueJugador = "AGUA"
-    ataqueDeEnemigo()
-}
-function ataqueTierra(){
-    ataqueJugador = "TIERRA"
-    ataqueDeEnemigo()
-}
 
 function ataqueDeEnemigo(){
-    let ataque = aleatorio(1,3)
+    let ataque = aleatorio(0,ataquesMokeponEnemigo.length-1)
 
 
 
-    if(ataque==1){
-        ataqueEnemigo = "FUEGO"
-    }else if(ataque==2){
-        ataqueEnemigo = "AGUA"
+    if(ataque==0||ataque==1){
+        ataqueEnemigo.push("FUEGO")
+    }else if(ataque==3||ataque==4){
+        ataqueEnemigo.push("AGUA")
     }else{
-        ataqueEnemigo = "TIERRA"
+        ataqueEnemigo.push("TIERRA")
     }
-    
+    console.log(ataqueEnemigo)
     combate();
 }
 
