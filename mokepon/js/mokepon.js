@@ -37,7 +37,8 @@ let inputRatigueya
 let vidasJugador = 3
 let vidasEnemigo = 3
 let ataqueMokepon
-
+let botones = []
+let ataqueDeJugador = []
 class Mokepon{
     constructor(nombre, foto, vida){
         this.nombre = nombre
@@ -136,7 +137,7 @@ function seleccionarMascotaEnemigo(){
     let mascota = aleatorio(0,mokepones.length-1)
 
     spanMascotaEnemigo.innerHTML = mokepones[mascota].nombre
-    
+    secuenciaAtaques()
     // activarAtaques(mokepones[mascota])
 
     
@@ -166,9 +167,31 @@ function activarAtaques(){
     btnAgua = document.getElementById('btn-agua')
     btnTierra = document.getElementById('btn-tierra')
 
+    botones = document.querySelectorAll('.btn-ataque')
+
     btnFuego.addEventListener('click',ataqueFuego)
     btnAgua.addEventListener('click',ataqueAgua)
     btnTierra.addEventListener('click',ataqueTierra)
+}
+
+function secuenciaAtaques(){
+    botones.forEach((btn)=>{
+        btn.addEventListener('click',(e)=>{
+            if(e.target.textContent === "🔥"){
+                ataqueDeJugador.push("FUEGO")
+                console.log(ataqueDeJugador)
+                btn.style.background = "#112f58"
+            }else if(e.target.textContent === "💧"){
+                ataqueDeJugador.push("AGUA")
+                console.log(ataqueDeJugador)
+                btn.style.background = "#112f58"
+            }else{
+                ataqueDeJugador.push("TIERRA")
+                console.log(ataqueDeJugador)
+                btn.style.background = "#112f58"
+            }
+        })
+    })
 }
 
 function ataqueFuego(){
