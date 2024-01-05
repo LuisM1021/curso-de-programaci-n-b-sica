@@ -180,6 +180,7 @@ function secuenciaAtaques(){
                 console.log(ataqueDeJugador)
                 btn.style.background = "#112f58"
             }
+            btn.disabled = true
             ataqueDeEnemigo()
         })
     })
@@ -210,19 +211,24 @@ function iniciarPelea(){
     }
 }
 function combate(){
+    let ganador
     for (let i = 0; i<ataqueDeJugador.length; i++){
         if(ataqueDeJugador[i] == "FUEGO" && ataqueEnemigo[i] == "TIERRA"){
             victoriasJugador++
+            ganador = "jugador"
         } else if(ataqueDeJugador[i] == "AGUA" && ataqueEnemigo[i] == "FUEGO"){
             victoriasJugador++
+            ganador = "jugador"
         } else if(ataqueDeJugador[i] == "TIERRA" && ataqueEnemigo[i] == "AGUA"){
             victoriasJugador++
+            ganador = "jugador"
         } else if(ataqueDeJugador[i] ==ataqueEnemigo[i]){
-            //empate
+            ganador = "empate"
         }else{
             victoriasEnemigo++
+            ganador = "enemigo"
         }
-        mostrarAtaques(ataqueDeJugador[i],ataqueEnemigo[i])
+        mostrarAtaques(ataqueDeJugador[i],ataqueEnemigo[i],ganador)
         
     }
     crearMensajeFinal()
@@ -233,11 +239,22 @@ function actualizarVictorias(){
     spanVidasJugador.innerHTML = victoriasJugador
     spanVidasEnemigo.innerHTML = victoriasEnemigo
 }
-function mostrarAtaques(atqJugador,atqEnemigo){
+function mostrarAtaques(atqJugador,atqEnemigo,ganador){
     let nuevoAtaqueJugador = document.createElement('p')
     let nuevoAtaqueEnemigo = document.createElement('p')
     nuevoAtaqueJugador.innerHTML = atqJugador
     nuevoAtaqueEnemigo.innerHTML = atqEnemigo
+    if(ganador == "jugador"){
+        nuevoAtaqueJugador.style.color = "#65B741"
+        nuevoAtaqueEnemigo.style.color = "#750E21"
+    }else if(ganador == "enemigo"){
+        nuevoAtaqueJugador.style.color = "#750E21"
+        nuevoAtaqueEnemigo.style.color = "#65B741"
+    }else{
+        nuevoAtaqueJugador.style.color = "#F4F27E"
+        nuevoAtaqueEnemigo.style.color = "#F4F27E"
+    }
+    /////arreglar lo del colloororrorror
 
     ataqueDelJugador.appendChild(nuevoAtaqueJugador)
     ataqueDelEnemigo.appendChild(nuevoAtaqueEnemigo)
@@ -251,10 +268,6 @@ function crearMensajeFinal(){
     }else{
         sectionMensajes.innerHTML = "Hubo un empate"
     }
-
-    btnAgua.disabled = true
-    btnFuego.disabled = true
-    btnTierra.disabled = true
 
     btnReiniciar.style.display = 'block'
     btnReiniciar.style.backgroundColor= 'rgb(0,255,0)'

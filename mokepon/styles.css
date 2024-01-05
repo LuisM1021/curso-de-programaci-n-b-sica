@@ -74,7 +74,7 @@ input:checked + label{
     background-color: blue;
     border: 3px solid aquamarine;
     margin: 4px;
-    width: 88px;
+    width: 80px;
     height: 32px;
     font-family: 'Chakra Petch', sans-serif;
     color: azure;
