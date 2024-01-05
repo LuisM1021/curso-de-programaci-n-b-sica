@@ -101,7 +101,7 @@ input:checked + label{
     color: white;
     text-align: center;
 }
-@media (max-width: 360px){
+@media (max-width: 640px){
     .tarjetas {
         flex-direction: column;
     }
