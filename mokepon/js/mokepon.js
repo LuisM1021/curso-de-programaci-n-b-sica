@@ -27,7 +27,8 @@ let btnFuego
 
 let mokepones = []
 // let ataqueJugador
-let mascotaJugador
+let indexMascotaJugador
+let indexMascotaEnemigo
 let ataqueEnemigo =[]
 let opcionDeMokepones
 let inputHipodogue
@@ -43,17 +44,18 @@ let victoriasJugador = 0
 let victoriasEnemigo = 0
 
 class Mokepon{
-    constructor(nombre, foto, vida){
+    constructor(nombre, foto, vida, poder){
         this.nombre = nombre
         this.foto = foto
         this.vida = vida 
         this.ataques = []
+        this.poder = poder
     }
 }
 
-let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5)
-let capipepo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5)
-let ratigueya = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5)
+let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧")
+let capipepo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱")
+let ratigueya = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥")
 
 // let cr7 = new Mokepon("Cristiano Ronaldo cr7","https://th.bing.com/th/id/OIP.1CBXsd9HagOaD_voR4yYRQHaEK?w=333&h=187&c=7&r=0&o=5&pid=1.7",5)
 
@@ -89,7 +91,7 @@ function iniciarJuego(){
         opcionDeMokepones = `
         <input type="radio" name="mascota" id="${mokepon.nombre}">
                 <label class="tarjeta-de-mokepon" for="${mokepon.nombre}">
-                    <p>${mokepon.nombre}</p>
+                    <p>${mokepon.nombre} ${mokepon.poder}</p>
                     <img src="${mokepon.foto}" alt="${mokepon.nombre}">
                 </label>
         `
@@ -111,24 +113,25 @@ function iniciarJuego(){
 
 function seleccionarMascotaJugador(){
     if(inputHipodogue.checked){
-        spanMascotaJugador.innerHTML = inputHipodogue.id
+        spanMascotaJugador.innerHTML = inputHipodogue.id + mokepones[0].poder
         error = false
-        mascotaJugador = inputHipodogue.id
+        indexMascotaJugador = 0
     }else if(inputCapipepo.checked){
-        spanMascotaJugador.innerHTML = inputCapipepo.id
+        spanMascotaJugador.innerHTML = inputCapipepo.id + mokepones[1].poder
         error = false
-        mascotaJugador = inputCapipepo.id
+        indexMascotaJugador = 1
     }else if(inputRatigueya.checked){
-        spanMascotaJugador.innerHTML = inputRatigueya.id
+        spanMascotaJugador.innerHTML = inputRatigueya.id + mokepones[2].poder
         error = false
-        mascotaJugador = inputRatigueya.id
+        indexMascotaJugador = 2
     }else{
         alert("No seleccionaste personaje")
         error = true
     }
     if(!error){
-        activarAtaques()
         seleccionarMascotaEnemigo() 
+        activarAtaques()
+        secuenciaAtaques()
         sectionSeleccionarAtaque.style.display = 'flex'
         sectionSeleccionarMascota.style.display = 'none'
     }
@@ -139,15 +142,14 @@ function seleccionarMascotaJugador(){
 function seleccionarMascotaEnemigo(){
     let mascota = aleatorio(0,mokepones.length-1)
 
-    spanMascotaEnemigo.innerHTML = mokepones[mascota].nombre
+    spanMascotaEnemigo.innerHTML = mokepones[mascota].nombre + mokepones[mascota].poder
     ataquesMokeponEnemigo = mokepones[mascota].ataques
-    secuenciaAtaques()
+    indexMascotaEnemigo = mascota
 }
 
 function activarAtaques(){
-    
     mokepones.forEach((mokepon)=>{
-        if (mokepon.nombre == mascotaJugador){
+        if (mokepon.nombre == mokepones[indexMascotaJugador].nombre){
             mokepon.ataques.forEach((ataque)=>{
                 ataqueMokepon = `
                 <button id="${ataque.id}" class="btn-ataque">${ataque.nombre}</button>
@@ -156,6 +158,7 @@ function activarAtaques(){
             })
         }
     })
+    ataqueExtra()
     btnFuego = document.getElementById('btn-fuego')
     btnAgua = document.getElementById('btn-agua')
     btnTierra = document.getElementById('btn-tierra')
@@ -163,7 +166,49 @@ function activarAtaques(){
     botones = document.querySelectorAll('.btn-ataque')
 
 }
+function ataqueExtra(){
+    let ataqueAleatorio = aleatorio(1,3)
+    let nombreAtaque
+    let idAtaque
+    let personajeGanador
 
+    switch (ataqueAleatorio){
+        case 1: 
+            nombreAtaque = "💧"
+            idAtaque = "btn-agua"
+            break
+        case 2: 
+            nombreAtaque = "🔥"
+            idAtaque = "btn-fuego"
+            break
+        case 3: 
+            nombreAtaque = "🌱"
+            idAtaque = "btn-tierra"
+            break
+    }
+
+    if(mokepones[indexMascotaJugador].poder == "💧" && mokepones[indexMascotaEnemigo].poder == "🔥"){
+        personajeGanador = "jugador"
+        console.log("Recibiste un ataque extra")
+    }else if(mokepones[indexMascotaJugador].poder == "🔥" && mokepones[indexMascotaEnemigo].poder == "🌱"){
+        personajeGanador = "jugador"
+        console.log("Recibiste un ataque extra")
+    }else if(mokepones[indexMascotaJugador].poder == "🌱" && mokepones[indexMascotaEnemigo].poder == "💧"){
+        personajeGanador = "jugador"
+        console.log("Recibiste un ataque extra")
+    }else if(indexMascotaJugador==indexMascotaEnemigo){
+        personajeGanador = "empate"
+    }else{
+        personajeGanador = "enemigo"
+    }
+
+    if(personajeGanador == "jugador"){
+        ataqueMokepon = `
+                <button id="${idAtaque}" class="btn-ataque">${nombreAtaque}</button>
+                `
+                botonesAtaque.innerHTML += ataqueMokepon
+    }
+}
 function secuenciaAtaques(){
     botones.forEach((btn)=>{
         btn.addEventListener('click',(e)=>{
@@ -207,6 +252,11 @@ function ataqueDeEnemigo(){
 
 function iniciarPelea(){
     if(ataqueDeJugador.length == 5){
+        botones.forEach((btn)=>{
+            if(btn.disabled == false){
+                btn.disabled = true
+            }
+        })
         combate()
     }
 }
@@ -254,7 +304,6 @@ function mostrarAtaques(atqJugador,atqEnemigo,ganador){
         nuevoAtaqueJugador.style.color = "#F4F27E"
         nuevoAtaqueEnemigo.style.color = "#F4F27E"
     }
-    /////arreglar lo del colloororrorror
 
     ataqueDelJugador.appendChild(nuevoAtaqueJugador)
     ataqueDelEnemigo.appendChild(nuevoAtaqueEnemigo)
