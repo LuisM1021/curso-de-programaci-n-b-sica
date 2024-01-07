@@ -189,17 +189,22 @@ function ataqueExtra(){
 
     if(mokepones[indexMascotaJugador].poder == "💧" && mokepones[indexMascotaEnemigo].poder == "🔥"){
         personajeGanador = "jugador"
+        sectionMensajes.innerHTML += "<br>¡Recibiste un ataque extra!"
         console.log("Recibiste un ataque extra")
     }else if(mokepones[indexMascotaJugador].poder == "🔥" && mokepones[indexMascotaEnemigo].poder == "🌱"){
         personajeGanador = "jugador"
+        sectionMensajes.innerHTML += "<br>¡Recibiste un ataque extra!"
         console.log("Recibiste un ataque extra")
     }else if(mokepones[indexMascotaJugador].poder == "🌱" && mokepones[indexMascotaEnemigo].poder == "💧"){
         personajeGanador = "jugador"
+        sectionMensajes.innerHTML += "<br>¡Recibiste un ataque extra!"
         console.log("Recibiste un ataque extra")
     }else if(indexMascotaJugador==indexMascotaEnemigo){
         personajeGanador = "empate"
     }else{
         personajeGanador = "enemigo"
+        sectionMensajes.innerHTML += "<br>!El enemigo recibió un ataque extra!"
+        console.log("El enemigo recibió un ataque extra")
     }
 
     if(personajeGanador == "jugador"){
@@ -207,6 +212,8 @@ function ataqueExtra(){
                 <button id="${idAtaque}" class="btn-ataque">${nombreAtaque}</button>
                 `
                 botonesAtaque.innerHTML += ataqueMokepon
+    }else if(personajeGanador == "enemigo"){
+        ataquesMokeponEnemigo.push({nombre: nombreAtaque, id: null})
     }
 }
 function secuenciaAtaques(){
@@ -238,16 +245,8 @@ function ataqueDeEnemigo(){
     console.log(ataque)
     ataqueEnemigo.push(ataquesMokeponEnemigo[ataque].nombre)
     ataquesMokeponEnemigo.splice(ataque,1)
-    // if(ataque==0||ataque==1){
-    //     ataqueEnemigo.push("FUEGO")
-    // }else if(ataque==3||ataque==4){
-    //     ataqueEnemigo.push("AGUA")
-    // }else{
-    //     ataqueEnemigo.push("TIERRA")
-    // }
     console.log(ataqueEnemigo)
     console.log(ataquesMokeponEnemigo)
-    // combate();
     iniciarPelea()
 }
 

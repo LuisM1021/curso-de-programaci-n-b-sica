@@ -61,7 +61,16 @@ input:checked + label{
     margin-top: 52px;
     font-family: 'Chakra Petch', sans-serif;
 }
-
+.instrucciones{
+    background-color: rgb(77, 89, 220);
+    margin-top: 32px;
+    padding: 16px;
+    border-radius: 16px;
+}
+.instrucciones p{
+    font-weight: bold;
+    color: white;
+}
 #seleccionar-ataque{
     flex-direction: column;
     align-items: center;
@@ -87,6 +96,7 @@ input:checked + label{
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 #btn-reiniciar{
     border: 1px dashed darkblue;
