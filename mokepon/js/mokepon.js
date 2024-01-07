@@ -213,15 +213,15 @@ function secuenciaAtaques(){
     botones.forEach((btn)=>{
         btn.addEventListener('click',(e)=>{
             if(e.target.textContent === "🔥"){
-                ataqueDeJugador.push("FUEGO")
+                ataqueDeJugador.push("🔥")
                 console.log(ataqueDeJugador)
                 btn.style.background = "#112f58"
             }else if(e.target.textContent === "💧"){
-                ataqueDeJugador.push("AGUA")
+                ataqueDeJugador.push("💧")
                 console.log(ataqueDeJugador)
                 btn.style.background = "#112f58"
             }else{
-                ataqueDeJugador.push("TIERRA")
+                ataqueDeJugador.push("🌱")
                 console.log(ataqueDeJugador)
                 btn.style.background = "#112f58"
             }
@@ -235,17 +235,18 @@ function secuenciaAtaques(){
 
 function ataqueDeEnemigo(){
     let ataque = aleatorio(0,ataquesMokeponEnemigo.length-1)
-
-
-
-    if(ataque==0||ataque==1){
-        ataqueEnemigo.push("FUEGO")
-    }else if(ataque==3||ataque==4){
-        ataqueEnemigo.push("AGUA")
-    }else{
-        ataqueEnemigo.push("TIERRA")
-    }
+    console.log(ataque)
+    ataqueEnemigo.push(ataquesMokeponEnemigo[ataque].nombre)
+    ataquesMokeponEnemigo.splice(ataque,1)
+    // if(ataque==0||ataque==1){
+    //     ataqueEnemigo.push("FUEGO")
+    // }else if(ataque==3||ataque==4){
+    //     ataqueEnemigo.push("AGUA")
+    // }else{
+    //     ataqueEnemigo.push("TIERRA")
+    // }
     console.log(ataqueEnemigo)
+    console.log(ataquesMokeponEnemigo)
     // combate();
     iniciarPelea()
 }
@@ -263,13 +264,13 @@ function iniciarPelea(){
 function combate(){
     let ganador
     for (let i = 0; i<ataqueDeJugador.length; i++){
-        if(ataqueDeJugador[i] == "FUEGO" && ataqueEnemigo[i] == "TIERRA"){
+        if(ataqueDeJugador[i] == "🔥" && ataqueEnemigo[i] == "🌱"){
             victoriasJugador++
             ganador = "jugador"
-        } else if(ataqueDeJugador[i] == "AGUA" && ataqueEnemigo[i] == "FUEGO"){
+        } else if(ataqueDeJugador[i] == "💧" && ataqueEnemigo[i] == "🔥"){
             victoriasJugador++
             ganador = "jugador"
-        } else if(ataqueDeJugador[i] == "TIERRA" && ataqueEnemigo[i] == "AGUA"){
+        } else if(ataqueDeJugador[i] == "🌱" && ataqueEnemigo[i] == "💧"){
             victoriasJugador++
             ganador = "jugador"
         } else if(ataqueDeJugador[i] ==ataqueEnemigo[i]){
