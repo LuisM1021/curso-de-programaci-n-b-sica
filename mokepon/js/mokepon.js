@@ -21,6 +21,9 @@ const sectionMensajes = document.getElementById('resultado')
 const contenedorTarjetas = document.getElementById('contenedor-tarjetas')
 const botonesAtaque = document.getElementById('botones-ataque')
 
+const sectionVerMapa = document.getElementById('ver-mapa')
+const mapa = document.getElementById('mapa')
+
 let btnAgua
 let btnTierra
 let btnFuego
@@ -42,6 +45,9 @@ let botones = []
 let ataqueDeJugador = []
 let victoriasJugador = 0
 let victoriasEnemigo = 0
+let lienzo = mapa.getContext("2d")
+let intervalo 
+
 
 class Mokepon{
     constructor(nombre, foto, vida, poder){
@@ -50,6 +56,14 @@ class Mokepon{
         this.vida = vida 
         this.ataques = []
         this.poder = poder
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = foto
+        this.velocidadX = 0
+        this.velocidadY = 0
     }
 }
 
@@ -86,6 +100,7 @@ ratigueya.ataques.push(
 function iniciarJuego(){
 
     sectionSeleccionarAtaque.style.display = 'none'
+    sectionVerMapa.style.display = 'none'
 
     mokepones.forEach((mokepon) => {
         opcionDeMokepones = `
@@ -132,8 +147,9 @@ function seleccionarMascotaJugador(){
         seleccionarMascotaEnemigo() 
         activarAtaques()
         secuenciaAtaques()
-        sectionSeleccionarAtaque.style.display = 'flex'
+        // sectionSeleccionarAtaque.style.display = 'flex'
         sectionSeleccionarMascota.style.display = 'none'
+        iniciarMapa()
     }
 }
     
@@ -328,5 +344,60 @@ function reiniciarJuego(){
 function aleatorio(min,max){
     return Math.floor(Math.random()*(max-min+1)+min)
 }
-
+function pintarPersonaje(){
+    mokepones[indexMascotaJugador].x = mokepones[indexMascotaJugador].x + mokepones[indexMascotaJugador].velocidadX 
+    mokepones[indexMascotaJugador].y = mokepones[indexMascotaJugador].y + mokepones[indexMascotaJugador].velocidadY 
+    lienzo.clearRect(0,0,mapa.clientWidth,mapa.height)
+    lienzo.drawImage(
+        mokepones[indexMascotaJugador].mapaFoto,
+        mokepones[indexMascotaJugador].x,
+        mokepones[indexMascotaJugador].y,
+        mokepones[indexMascotaJugador].ancho,
+        mokepones[indexMascotaJugador].alto,
+    )
+}
+function teclaMovimiento(event){
+    switch(event.key){
+        case "ArrowUp":
+            mover('arriba')
+            break
+        case "ArrowDown":
+            mover('abajo')
+            break
+        case "ArrowLeft":
+            mover('izquierda')
+            break
+        case "ArrowRight":
+            mover('derecha')
+            break
+        default: 
+            break;
+    }
+}
+function mover(direccion){
+    switch (direccion){
+        case "arriba":
+            mokepones[indexMascotaJugador].velocidadY = -5
+            break
+        case "abajo":
+            mokepones[indexMascotaJugador].velocidadY = 5
+            break
+        case "izquierda":
+            mokepones[indexMascotaJugador].velocidadX = -5
+            break
+        case "derecha":
+            mokepones[indexMascotaJugador].velocidadX = 5
+            break
+    }
+}
+function detenerMovimiento(){
+    mokepones[indexMascotaJugador].velocidadX = 0
+    mokepones[indexMascotaJugador].velocidadY = 0
+}
+function iniciarMapa(){
+    sectionVerMapa.style.display = 'flex'
+        intervalo = setInterval(pintarPersonaje,50)
+        window.addEventListener('keydown',teclaMovimiento)
+        window.addEventListener('keyup',detenerMovimiento)
+}
 window.addEventListener('load',iniciarJuego)
