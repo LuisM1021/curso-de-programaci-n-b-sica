@@ -48,28 +48,43 @@ let victoriasEnemigo = 0
 let lienzo = mapa.getContext("2d")
 let intervalo 
 
+let mapaBackground = new Image()
+mapaBackground.src = './assets/mokemap.png'
+
 
 class Mokepon{
-    constructor(nombre, foto, vida, poder){
+    constructor(nombre, foto, vida, poder, fotoMapa, x=10,y=10){
         this.nombre = nombre
         this.foto = foto
         this.vida = vida 
         this.ataques = []
         this.poder = poder
-        this.x = 20
-        this.y = 30
-        this.ancho = 80
-        this.alto = 80
+        this.x = x
+        this.y = y
+        this.ancho = 40
+        this.alto = 40
         this.mapaFoto = new Image()
-        this.mapaFoto.src = foto
+        this.mapaFoto.src = fotoMapa
         this.velocidadX = 0
         this.velocidadY = 0
     }
+    pintarMokepon(){
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
+    }
 }
 
-let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧")
-let capipepo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱")
-let ratigueya = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥")
+let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png")
+let capipepo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png")
+let ratigueya = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png")
+let hipodogueEnemigo = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",80,120)
+let capipepoEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",150,95)
+let ratigueyaEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",200,190)
 
 // let cr7 = new Mokepon("Cristiano Ronaldo cr7","https://th.bing.com/th/id/OIP.1CBXsd9HagOaD_voR4yYRQHaEK?w=333&h=187&c=7&r=0&o=5&pid=1.7",5)
 
@@ -344,17 +359,26 @@ function reiniciarJuego(){
 function aleatorio(min,max){
     return Math.floor(Math.random()*(max-min+1)+min)
 }
-function pintarPersonaje(){
+function pintarCanvas(){
     mokepones[indexMascotaJugador].x = mokepones[indexMascotaJugador].x + mokepones[indexMascotaJugador].velocidadX 
     mokepones[indexMascotaJugador].y = mokepones[indexMascotaJugador].y + mokepones[indexMascotaJugador].velocidadY 
     lienzo.clearRect(0,0,mapa.clientWidth,mapa.height)
     lienzo.drawImage(
-        mokepones[indexMascotaJugador].mapaFoto,
-        mokepones[indexMascotaJugador].x,
-        mokepones[indexMascotaJugador].y,
-        mokepones[indexMascotaJugador].ancho,
-        mokepones[indexMascotaJugador].alto,
+        mapaBackground,
+        0,
+        0,
+        mapa.width,
+        mapa.height
     )
+    mokepones[indexMascotaJugador].pintarMokepon()
+    hipodogueEnemigo.pintarMokepon()
+    ratigueyaEnemigo.pintarMokepon()
+    capipepoEnemigo.pintarMokepon()
+    if(mokepones[indexMascotaJugador].velocidadX!=0 || mokepones[indexMascotaJugador].velocidadY){
+        revisarColision(hipodogueEnemigo)
+        revisarColision(capipepoEnemigo)
+        revisarColision(ratigueyaEnemigo)
+    }
 }
 function teclaMovimiento(event){
     switch(event.key){
@@ -396,8 +420,34 @@ function detenerMovimiento(){
 }
 function iniciarMapa(){
     sectionVerMapa.style.display = 'flex'
-        intervalo = setInterval(pintarPersonaje,50)
-        window.addEventListener('keydown',teclaMovimiento)
-        window.addEventListener('keyup',detenerMovimiento)
+    mapa.width = 320
+    mapa.height = 240
+    intervalo = setInterval(pintarCanvas,50)
+    window.addEventListener('keydown',teclaMovimiento)
+    window.addEventListener('keyup',detenerMovimiento)
+}
+function revisarColision(enemigo){
+    const arribaEnemigo = enemigo.y
+    const abajoEnemigo = enemigo.y + enemigo.alto
+    const derechaEnemigo = enemigo.x + enemigo.ancho
+    const izquierdaEnemigo = enemigo.x
+
+    const arribaMascota = mokepones[indexMascotaJugador].y
+    const abajoMascota = mokepones[indexMascotaJugador].y + mokepones[indexMascotaJugador].alto
+    const derechaMascota = mokepones[indexMascotaJugador].x + mokepones[indexMascotaJugador].ancho
+    const izquierdaMascota = mokepones[indexMascotaJugador].x
+
+    if(
+        abajoMascota < arribaEnemigo ||
+        arribaMascota>abajoEnemigo ||
+        derechaMascota< izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo
+    ){
+        return
+    }
+    else{
+        detenerMovimiento()
+        alert("Colisión con "+enemigo.nombre)
+    }
 }
 window.addEventListener('load',iniciarJuego)
