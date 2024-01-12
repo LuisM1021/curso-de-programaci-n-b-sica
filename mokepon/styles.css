@@ -118,9 +118,25 @@ input:checked + label{
     justify-content: center;
 }
 #mapa{
-    border: 2px solid white;
+    margin-top: 32px;
 }
-@media (max-width: 360px){
+#ver-mapa button{
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    font-size: medium;
+    font-weight: bold;
+    color: aliceblue;
+    border: 2px solid aquamarine;
+    border-radius: 12px;
+    margin-right: 8px;
+    font-family: 'Chakra Petch', sans-serif;
+}
+#ver-mapa div{
+    display: flex;
+    margin-top: 8px;
+}
+@media (max-width: 560px){
     .tarjetas {
         flex-direction: column;
     }
