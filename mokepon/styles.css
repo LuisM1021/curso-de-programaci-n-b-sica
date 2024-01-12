@@ -111,7 +111,36 @@ input:checked + label{
     color: white;
     text-align: center;
 }
+<<<<<<< HEAD
 @media (max-width: 640px){
+=======
+
+#ver-mapa{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#mapa{
+    margin-top: 32px;
+}
+#ver-mapa button{
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    font-size: medium;
+    font-weight: bold;
+    color: aliceblue;
+    border: 2px solid aquamarine;
+    border-radius: 12px;
+    margin-right: 8px;
+    font-family: 'Chakra Petch', sans-serif;
+}
+#ver-mapa div{
+    display: flex;
+    margin-top: 8px;
+}
+@media (max-width: 560px){
+>>>>>>> dev
     .tarjetas {
         flex-direction: column;
     }
