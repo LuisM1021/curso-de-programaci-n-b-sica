@@ -89,6 +89,18 @@ class Mokepon{
             this.alto
         )
     }
+    evitarSalidaDePantalla(){
+        if(this.x>=(mapa.width-this.ancho)){
+            this.x = (mapa.width-this.ancho)
+        }else if(this.x<=0){
+            this.x = 0
+        }
+        if(this.y>=(mapa.height-this.alto)){
+            this.y = (mapa.height-this.alto)
+        }else if(this.y<=0){
+            this.y = 0
+        }
+    }
 }
 
 let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",0)
@@ -398,6 +410,7 @@ function pintarCanvas(){
         mapa.width,
         mapa.height
     )
+    mokepones[indexMascotaJugador].evitarSalidaDePantalla()
     mokepones[indexMascotaJugador].pintarMokepon()
     hipodogueEnemigo.pintarMokepon()
     ratigueyaEnemigo.pintarMokepon()
