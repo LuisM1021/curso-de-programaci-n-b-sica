@@ -29,6 +29,7 @@ let btnTierra
 let btnFuego
 
 let mokepones = []
+let mokeponesEnemigos = []
 // let ataqueJugador
 let indexMascotaJugador
 let indexMascotaEnemigo
@@ -72,8 +73,8 @@ class Mokepon{
         this.poder = poder
         this.ancho = 40
         this.alto = 40
-        this.x = aleatorio(0,mapa.width-this.ancho)
-        this.y = aleatorio(0,mapa.height-this.alto)
+        this.x = 0
+        this.y = 0 
         this.mapaFoto = new Image()
         this.mapaFoto.src = fotoMapa
         this.velocidadX = 0
@@ -111,7 +112,7 @@ let capipepoEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_a
 let ratigueyaEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",-1)
 
 // let cr7 = new Mokepon("Cristiano Ronaldo cr7","https://th.bing.com/th/id/OIP.1CBXsd9HagOaD_voR4yYRQHaEK?w=333&h=187&c=7&r=0&o=5&pid=1.7",5)
-
+mokeponesEnemigos.push(hipodogueEnemigo,capipepoEnemigo,ratigueyaEnemigo)
 mokepones.push(hipodogue,capipepo,ratigueya)
 hipodogue.ataques.push(
     {nombre: "💧", id: "btn-agua"},
@@ -461,10 +462,57 @@ function detenerMovimiento(){
 }
 function iniciarMapa(){
     sectionVerMapa.style.display = 'flex'
-    
+    definirPosicionesIniciales()
     intervalo = setInterval(pintarCanvas,50)
     window.addEventListener('keydown',teclaMovimiento)
     window.addEventListener('keyup',detenerMovimiento)
+    
+}
+function definirPosicionesIniciales(){
+    const posicionesBloqueadas ={
+        x: [],
+        y: [],
+        cont: 0
+    }
+    let cortar = 0
+    let posX
+    let posY
+    posX = aleatorio(0,mapa.width-mokepones[indexMascotaJugador].ancho)
+    posY = aleatorio(0,mapa.height-mokepones[indexMascotaJugador].alto)
+    mokepones[indexMascotaJugador].x = posX
+    mokepones[indexMascotaJugador].y = posY
+    posicionesBloqueadas.x[0] = posX
+    posicionesBloqueadas.y[0] = posY
+    posicionesBloqueadas.cont ++
+    console.log(`${mokepones[indexMascotaJugador].nombre}: (${posX},${posY})`)
+    mokeponesEnemigos.forEach((mokepon)=>{
+        let posicionPermitida = false
+        for(let it=0;it<=posicionesBloqueadas.cont;it++){
+            console.log("Iteración de posicionesBloquedas: "+it)
+            do{
+                if(!posicionPermitida){
+                    posX = aleatorio(0,mapa.width-mokepon.ancho)
+                    posY = aleatorio(0,mapa.height-mokepon.alto)
+                }
+                
+                if(posX<=(posicionesBloqueadas.x[it]+40)&&posY<=(posicionesBloqueadas.y[it]+40)&&posX>=(posicionesBloqueadas.x[it]-40)&&posY>=(posicionesBloqueadas.y[it]-40)){
+                    posicionPermitida = false
+                    console.log(`Si ${posX} es menor o igual que ${posicionesBloqueadas.x[it]+40} y ${posY} es menor o igual que${posicionesBloqueadas.y[it]+40} y ${posX} es mayor o igual que ${posicionesBloqueadas.x[it]-40} y ${posY} es mayor o igual que${posicionesBloqueadas.y[it]-40}entonces el mokepon ${mokepon.nombre} no toma la posicion: ${posX},${posY})`)
+                }else{
+                    posicionPermitida = true
+                    console.log(`Posicion de ${mokepon.nombre}: (${posX},${posY})`)
+                }
+                cortar++
+            }while(!posicionPermitida&&(cortar!=10))
+        }
+        posicionesBloqueadas.x.push(posX)
+        posicionesBloqueadas.y.push(posY)
+        posicionesBloqueadas.cont ++
+        mokepon.x=posX
+        mokepon.y=posY
+        console.log(posicionesBloqueadas.cont)
+    })
+
 }
 function revisarColision(enemigo){
     const arribaEnemigo = enemigo.y
