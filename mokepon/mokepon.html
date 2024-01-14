@@ -10,36 +10,8 @@
             <h1 class="titulo">Mokepon 🔥🌱💧</h1>
             <h2 class="subtitulo">Elige tu mascota:</h2>
             <div class="tarjetas" id="contenedor-tarjetas">
-                <!-- <input type="radio" name="mascota" id="hipodogue">
-                <label class="tarjeta-de-mokepon" for="hipodogue">
-                    <p>Hipodogue</p>
-                    <img src="assets/mokepons_mokepon_hipodoge_attack.png" alt="Hipodogue">
-                </label>
-                <input type="radio" name="mascota" id="capipepo">
-                <label class="tarjeta-de-mokepon" for="capipepo">
-                    <p>Capipepo</p>
-                    <img src="assets/mokepons_mokepon_capipepo_attack.png" alt="Capipepo">
-                </label>
-                <input type="radio" name="mascota" id="ratigueya">
-                <label class="tarjeta-de-mokepon" for="ratigueya">
-                    <p>Ratigueya</p>
-                    <img src="assets/mokepons_mokepon_ratigueya_attack.png" alt="Ratigueya">
-                </label> -->
             </div>
-            
-
-
-
-            <!-- <input type="radio" name="mascota" id="Langostelvis">
-            <input type="radio" name="mascota">
-            <input type="radio" name="mascota"> -->
-            <!-- Hipodoge ->Agua
-            Capipepo -> Tierra
-            Ratigueya -> Fuego -->
-            <!-- Langostelvis -> Agua y Fuego
-            Tucapalma -> Agua y Tierra
-            Pydos -> Tierra y Fuego -->
-
+  
             <button id="btn-mascota">Seleccionar</button>
             <div class="instrucciones">
                 <p>💧 vs 🔥 -> 💧</p>
@@ -51,10 +23,10 @@
             <h1 class="titulo">Recorre el mapa con tu mokepon</h1>
             <canvas id="mapa"></canvas>
             <div>
-                <button onmouseup="detenerMovimiento()" onmousedown="mover('arriba')">⬆️</button>
-                <button onmouseup="detenerMovimiento()" onmousedown="mover('izquierda')">⬅️</button>
-                <button onmouseup="detenerMovimiento()" onmousedown="mover('abajo')">⬇️</button>
-                <button onmouseup="detenerMovimiento()" onmousedown="mover('derecha')">➡️</button>
+                <button ontouchstart="mover('izquierda')" ontouchend="detenerMovimiento()" onmouseup="detenerMovimiento()" onmousedown="mover('izquierda')">⬅️</button>
+                <button ontouchstart="mover('arriba')" ontouchend="detenerMovimiento()" onmouseup="detenerMovimiento()" onmousedown="mover('arriba')">⬆️</button>
+                <button ontouchstart="mover('abajo')" ontouchend="detenerMovimiento()" onmouseup="detenerMovimiento()" onmousedown="mover('abajo')">⬇️</button>
+                <button ontouchstart="mover('derecha')" ontouchend="detenerMovimiento()" onmouseup="detenerMovimiento()" onmousedown="mover('derecha')">➡️</button>
             </div>
         </section>
 
