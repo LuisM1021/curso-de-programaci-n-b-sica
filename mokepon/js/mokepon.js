@@ -28,6 +28,7 @@ let btnAgua
 let btnTierra
 let btnFuego
 
+let jugadorId = null
 let mokepones = []
 let mokeponesEnemigos = []
 // let ataqueJugador
@@ -174,6 +175,7 @@ function unirseAlJuego(){
                 res.text()
                     .then(function(respuesta){
                         console.log(respuesta)
+                        jugadorId = respuesta
                     })
             }
         })
@@ -196,13 +198,24 @@ function seleccionarMascotaJugador(){
         error = true
     }
     if(!error){
+        seleccionarMokepon(mokepones[indexMascotaJugador].nombre)
         //sectionSeleccionarAtaque.style.display = 'flex'
         sectionSeleccionarMascota.style.display = 'none'
         iniciarMapa()
     }
 }
     
-
+function seleccionarMokepon(mascotaJugador){
+    fetch("http://localhost:8080/mokepon/" + jugadorId, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mokepon: mascotaJugador
+        })
+    })
+}
 
 function seleccionarMascotaEnemigo(nombreEnemigo){
     // let mascota = aleatorio(0,mokepones.length-1)
@@ -413,6 +426,9 @@ function pintarCanvas(){
     )
     mokepones[indexMascotaJugador].evitarSalidaDePantalla()
     mokepones[indexMascotaJugador].pintarMokepon()
+
+    enviarPosicion(mokepones[indexMascotaJugador].x,mokepones[indexMascotaJugador].y)
+
     hipodogueEnemigo.pintarMokepon()
     ratigueyaEnemigo.pintarMokepon()
     capipepoEnemigo.pintarMokepon()
@@ -422,6 +438,20 @@ function pintarCanvas(){
         revisarColision(ratigueyaEnemigo)
     }
 }
+
+function enviarPosicion(x,y){
+    fetch(`http://localhost:8080/mokepon/${jugadorId}/posicion`, {
+        method: "post",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+}
+
 function teclaMovimiento(event){
     switch(event.key){
         case "ArrowUp":
