@@ -450,6 +450,14 @@ function enviarPosicion(x,y){
             y
         })
     })
+    .then(function(res){
+        if(res.ok){
+            res.json()
+            .then(function({enemigos}){
+                console.log(enemigos)
+            })
+        }
+    })
 }
 
 function teclaMovimiento(event){
