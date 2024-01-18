@@ -108,12 +108,10 @@ class Mokepon{
 let hipodogue = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",0)
 let capipepo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",1)
 let ratigueya = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",2)
-let hipodogueEnemigo = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",-1)
-let capipepoEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",-1)
-let ratigueyaEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",-1)
+
 
 // let cr7 = new Mokepon("Cristiano Ronaldo cr7","https://th.bing.com/th/id/OIP.1CBXsd9HagOaD_voR4yYRQHaEK?w=333&h=187&c=7&r=0&o=5&pid=1.7",5)
-mokeponesEnemigos.push(hipodogueEnemigo,capipepoEnemigo,ratigueyaEnemigo)
+// mokeponesEnemigos.push(hipodogueEnemigo,capipepoEnemigo,ratigueyaEnemigo)
 mokepones.push(hipodogue,capipepo,ratigueya)
 hipodogue.ataques.push(
     {nombre: "💧", id: "btn-agua"},
@@ -429,13 +427,13 @@ function pintarCanvas(){
 
     enviarPosicion(mokepones[indexMascotaJugador].x,mokepones[indexMascotaJugador].y)
 
-    hipodogueEnemigo.pintarMokepon()
-    ratigueyaEnemigo.pintarMokepon()
-    capipepoEnemigo.pintarMokepon()
+    // hipodogueEnemigo.pintarMokepon()
+    // ratigueyaEnemigo.pintarMokepon()
+    // capipepoEnemigo.pintarMokepon()
     if(mokepones[indexMascotaJugador].velocidadX!=0 || mokepones[indexMascotaJugador].velocidadY){
-        revisarColision(hipodogueEnemigo)
-        revisarColision(capipepoEnemigo)
-        revisarColision(ratigueyaEnemigo)
+        // revisarColision(hipodogueEnemigo)
+        // revisarColision(capipepoEnemigo)
+        // revisarColision(ratigueyaEnemigo)
     }
 }
 
@@ -455,6 +453,22 @@ function enviarPosicion(x,y){
             res.json()
             .then(function({enemigos}){
                 console.log(enemigos)
+                //Creación de las mascotas enemigas
+                enemigos.forEach((enemigo)=>{
+                    let mokeponEnemigo = null
+                    const mascotaEnemiga = enemigo.mokepon.nombre || ""
+                    if(mascotaEnemiga == "Hipodogue"){
+                        mokeponEnemigo = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",-1)
+                    }else if(mascotaEnemiga == "Capipepo"){
+                        mokeponEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",-1)
+                    }else if(mascotaEnemiga == "Ratigueya"){
+                        mokeponEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",-1)
+                    }
+                    mokeponEnemigo.x = enemigo.x
+                    mokeponEnemigo.y = enemigo.y
+                    mokeponEnemigo.pintarMokepon()
+                })
+                
             })
         }
     })
