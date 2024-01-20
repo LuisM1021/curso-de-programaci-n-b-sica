@@ -31,6 +31,7 @@ let btnFuego
 let jugadorId = null
 let mokepones = []
 let mokeponesEnemigos = []
+let posicionMokeponesEnemigos = []
 // let ataqueJugador
 let indexMascotaJugador
 let indexMascotaEnemigo
@@ -426,15 +427,20 @@ function pintarCanvas(){
     mokepones[indexMascotaJugador].pintarMokepon()
 
     enviarPosicion(mokepones[indexMascotaJugador].x,mokepones[indexMascotaJugador].y)
-
+     posicionMokeponesEnemigos.forEach((mokepon)=>{
+         mokepon.pintarMokepon()
+         revisarColision(mokepon)
+            // alert(mokepon)
+            // console.log(mokepon)
+     })
     // hipodogueEnemigo.pintarMokepon()
     // ratigueyaEnemigo.pintarMokepon()
     // capipepoEnemigo.pintarMokepon()
-    if(mokepones[indexMascotaJugador].velocidadX!=0 || mokepones[indexMascotaJugador].velocidadY){
-        // revisarColision(hipodogueEnemigo)
-        // revisarColision(capipepoEnemigo)
-        // revisarColision(ratigueyaEnemigo)
-    }
+    // if(mokepones[indexMascotaJugador].velocidadX!=0 || mokepones[indexMascotaJugador].velocidadY){
+    //     // revisarColision(hipodogueEnemigo)
+    //     // revisarColision(capipepoEnemigo)
+    //     // revisarColision(ratigueyaEnemigo)
+    // }
 }
 
 function enviarPosicion(x,y){
@@ -454,19 +460,22 @@ function enviarPosicion(x,y){
             .then(function({enemigos}){
                 console.log(enemigos)
                 //Creación de las mascotas enemigas
-                enemigos.forEach((enemigo)=>{
+                posicionMokeponesEnemigos =enemigos.map(function(enemigo){
                     let mokeponEnemigo = null
                     const mascotaEnemiga = enemigo.mokepon.nombre || ""
-                    if(mascotaEnemiga == "Hipodogue"){
+                    if(mascotaEnemiga === "Hipodogue"){
                         mokeponEnemigo = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",-1)
-                    }else if(mascotaEnemiga == "Capipepo"){
+                    }else if(mascotaEnemiga === "Capipepo"){
                         mokeponEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",-1)
-                    }else if(mascotaEnemiga == "Ratigueya"){
+                    }else if(mascotaEnemiga === "Ratigueya"){
                         mokeponEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",-1)
                     }
                     mokeponEnemigo.x = enemigo.x
                     mokeponEnemigo.y = enemigo.y
-                    mokeponEnemigo.pintarMokepon()
+                    // alert(`mokeponEnemigo.x ${mokeponEnemigo.x}
+                    // mokeponEnemigo.y = ${mokeponEnemigo.y}`)
+                    return mokeponEnemigo
+                    // mokeponEnemigo.pintarMokepon()
                 })
                 
             })
@@ -571,27 +580,43 @@ function revisarColision(enemigo){
     const abajoEnemigo = enemigo.y + enemigo.alto
     const derechaEnemigo = enemigo.x + enemigo.ancho
     const izquierdaEnemigo = enemigo.x
-
+    
     const arribaMascota = mokepones[indexMascotaJugador].y
     const abajoMascota = mokepones[indexMascotaJugador].y + mokepones[indexMascotaJugador].alto
     const derechaMascota = mokepones[indexMascotaJugador].x + mokepones[indexMascotaJugador].ancho
     const izquierdaMascota = mokepones[indexMascotaJugador].x
-
-    if(
-        abajoMascota < arribaEnemigo ||
-        arribaMascota>abajoEnemigo ||
-        derechaMascota< izquierdaEnemigo ||
-        izquierdaMascota > derechaEnemigo
-    ){
-        return
+    console.log(enemigo)
+    console.log(`arribaEnemigo = ${arribaEnemigo}
+    abajoEnemigo = ${abajoEnemigo}
+    izquierdaEnemigo = ${izquierdaEnemigo}
+    derechaEnemigo = ${derechaEnemigo}
+    arribaMascota = ${arribaMascota}
+    abajoMascota = ${abajoMascota}
+    izquierdaMascota = ${izquierdaMascota}
+    derechaMascota = ${derechaMascota}
+    `)
+    if(enemigo.x == undefined || enemigo.y == undefined){
+        console.log("No se revisa colisión")
+    }else{
+        if(
+            abajoMascota < arribaEnemigo ||
+            arribaMascota>abajoEnemigo ||
+            derechaMascota< izquierdaEnemigo ||
+            izquierdaMascota > derechaEnemigo
+        ){
+            console.log("No hay colisión")
+            return
+        }
+        else{
+             console.log("Colision")
+            clearInterval(intervalo)
+            detenerMovimiento()
+            sectionSeleccionarAtaque.style.display = 'flex'
+            sectionVerMapa.style.display = 'none'
+            seleccionarMascotaEnemigo(enemigo.nombre) 
+            // alert("Colisión con "+enemigo.nombre)
+        }
     }
-    else{
-        clearInterval(intervalo)
-        detenerMovimiento()
-        sectionSeleccionarAtaque.style.display = 'flex'
-        sectionVerMapa.style.display = 'none'
-        seleccionarMascotaEnemigo(enemigo.nombre) 
-        // alert("Colisión con "+enemigo.nombre)
-    }
+    
 }
 window.addEventListener('load',iniciarJuego)

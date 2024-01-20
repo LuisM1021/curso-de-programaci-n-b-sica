@@ -32,7 +32,7 @@ app.get("/unirse", (req,res) =>{
     jugadores.push(jugador)
 
     res.setHeader("Access-Control-Allow-Origin","*")
-
+    console.log("Se unió: "+id)
     res.send(id)
 })
 
