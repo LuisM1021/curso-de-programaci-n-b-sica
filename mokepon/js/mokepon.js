@@ -29,6 +29,7 @@ let btnTierra
 let btnFuego
 
 let jugadorId = null
+let enemigoId = null
 let mokepones = []
 let mokeponesEnemigos = []
 let posicionMokeponesEnemigos = []
@@ -67,7 +68,7 @@ mapaBackground.src = './assets/mokemap.png'
 
 
 class Mokepon{
-    constructor(nombre, foto, vida, poder, fotoMapa,index){
+    constructor(nombre, foto, vida, poder, fotoMapa,index,id){
         this.nombre = nombre
         this.foto = foto
         this.vida = vida 
@@ -82,6 +83,7 @@ class Mokepon{
         this.velocidadX = 0
         this.velocidadY = 0
         this.index = index
+        this.id = id
     }
     pintarMokepon(){
         lienzo.drawImage(
@@ -317,12 +319,43 @@ function secuenciaAtaques(){
                 btn.style.background = "#112f58"
             }
             btn.disabled = true
-            ataqueDeEnemigo()
+            //ataqueDeEnemigo()
+            if(ataqueDeJugador.length === 5){
+                enviarAtaques()
+            }           
         })
     })
     
 }
+function enviarAtaques(){
+    fetch(`http://localhost:8080/mokepon/${jugadorId}/ataques`,{
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ataques: ataqueDeJugador
+        })
+    })
+    intervalo = setInterval(obtenerAtaques,50)
+}
 
+function obtenerAtaques(){
+    console.log(' obtener Ataques,enemigo ID: '+enemigoId)
+    fetch(`http://localhost:8080/mokepon/${enemigoId}/ataques`)
+        .then(function(res){
+            if(res.ok){
+                res.json()
+                    .then(function ({ataques}){
+                        if(ataques.length === 5){
+                            console.log("Debe hacerse el combate: "+ataques + 'vs'+ataqueDeJugador)
+                            ataqueEnemigo = ataques
+                            combate()
+                        }
+                    })
+            }
+        })
+    }
 
 function ataqueDeEnemigo(){
     let ataque = aleatorio(0,ataquesMokeponEnemigo.length-1)
@@ -345,6 +378,7 @@ function iniciarPelea(){
     }
 }
 function combate(){
+    clearInterval(intervalo)
     let ganador
     for (let i = 0; i<ataqueDeJugador.length; i++){
         if(ataqueDeJugador[i] == "🔥" && ataqueEnemigo[i] == "🌱"){
@@ -458,17 +492,19 @@ function enviarPosicion(x,y){
         if(res.ok){
             res.json()
             .then(function({enemigos}){
-                console.log(enemigos)
+                enemigos.forEach((enemigo)=>{
+                    console.log("id de enemigo: "+enemigo.id)
+                })
                 //Creación de las mascotas enemigas
                 posicionMokeponesEnemigos =enemigos.map(function(enemigo){
                     let mokeponEnemigo = null
                     const mascotaEnemiga = enemigo.mokepon.nombre || ""
                     if(mascotaEnemiga === "Hipodogue"){
-                        mokeponEnemigo = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",-1)
+                        mokeponEnemigo = new Mokepon("Hipodogue","assets/mokepons_mokepon_hipodoge_attack.png",5,"💧","assets/hipodoge.png",-1,enemigo.id)
                     }else if(mascotaEnemiga === "Capipepo"){
-                        mokeponEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",-1)
+                        mokeponEnemigo = new Mokepon("Capipepo","assets/mokepons_mokepon_capipepo_attack.png",5, "🌱","assets/capipepo.png",-1,enemigo.id)
                     }else if(mascotaEnemiga === "Ratigueya"){
-                        mokeponEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",-1)
+                        mokeponEnemigo = new Mokepon("Ratigueya","assets/mokepons_mokepon_ratigueya_attack.png",5,"🔥","assets/ratigueya.png",-1,enemigo.id)
                     }
                     mokeponEnemigo.x = enemigo.x
                     mokeponEnemigo.y = enemigo.y
@@ -609,6 +645,8 @@ function revisarColision(enemigo){
         }
         else{
              console.log("Colision")
+             console.log("ENEMIGO ID "+ enemigo.id)
+            enemigoId = enemigo.id
             clearInterval(intervalo)
             detenerMovimiento()
             sectionSeleccionarAtaque.style.display = 'flex'
